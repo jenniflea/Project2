@@ -1,0 +1,19 @@
+Project 2 Notes:
+- Kind of like INK
+- FPS, probably played with mouse and keyboard or XBox controller
+- Everything in room is white/transparent (walls, floor, obstacles, enemies) except main door. Get to main door to complete level
+- Player has paint gun, can shoot enemies, walls, floor, obstacles, etc to see surroundings (probably limited number of bullets)
+- Running into transparent enemies can hurt you! Exposed parts of enemies won't hurt you (can use them to help you get to your goal!)...unless they're like spikes or something
+- Enemies may leave trail behind or spots, etc. to give you hints to their location
+
+Note:
+- Camera should be able to be moved with mouse/left control stick, arrow keys/right control stick will move player. Shoot with X/A.
+
+Enemies:
+- Slow moving cubes with large trails
+- Flying enemy that drops paint on you -- which apparently can hurt you. or can paint the floor!
+
+(Future work)
+Different Paint Guns:
+- Normal/beginner gun
+- idk what other types of guns there are

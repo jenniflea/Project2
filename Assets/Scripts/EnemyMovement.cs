@@ -5,26 +5,25 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour {
 
     public GameObject PaintPrefab;
-
     private Vector3 goal1;
-    private int counter = 0;
-
     private Rigidbody rb;
-	// Use this for initialization
-	void Start () {
-        goal1 = new Vector3(30, 5, 30);
+    private float speed = 5.0f;
+
+    private void Awake() {
+        goal1 = new Vector3(30, 2, 30);
         rb = GetComponent<Rigidbody>();
+    }
+
+    // Use this for initialization
+    void Start () {
+        rb.velocity = (transform.position - goal1).normalized * speed;
+        StartCoroutine("AddPaintTrail");
 	}
 	
-	// Update is called once per frame
-	void Update () {
-        counter++;
-        rb.velocity = goal1*Time.deltaTime;
-
-        if (counter == 120) {
-            Instantiate(PaintPrefab, transform.position + Vector3.down*2.5f, transform.rotation);
-            counter = 0;
+    IEnumerator AddPaintTrail() {
+        while (true) {
+            Instantiate(PaintPrefab, transform.position + Vector3.down*2, transform.rotation);
+            yield return new WaitForSeconds(0.25f);
         }
-
-	}
+    }
 }
