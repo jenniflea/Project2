@@ -14,6 +14,8 @@ namespace GamepadInput {
         public enum Axis { LeftStick, RightStick, Dpad }
         public enum OS {  Windows, Mac }
 
+        private static OS currentOS = OS.Mac;
+
         public static bool GetButtonDown(Button button) {
             KeyCode code = GetKeycode(button);
             return Input.GetKeyDown(code);
@@ -76,11 +78,11 @@ namespace GamepadInput {
         public static float GetTrigger(Trigger trigger, bool raw = false) {
             //
             string name = "";
-            OS os = OS.Windows;
-            if (Application.platform == RuntimePlatform.OSXPlayer)
-                os = OS.Mac;
+            if (Application.platform == RuntimePlatform.WindowsEditor ||
+                Application.platform == RuntimePlatform.WindowsPlayer)
+                currentOS = OS.Windows;
 
-            switch (os) {
+            switch (currentOS) {
                 case OS.Windows:
                     if (trigger == Trigger.LeftTrigger)
                         name = "TriggersLWindows";
