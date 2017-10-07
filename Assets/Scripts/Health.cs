@@ -4,8 +4,16 @@ using UnityEngine;
 
 public class Health : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+    public int currentHealth = 5;
+
+    private void OnCollisionEnter(Collision collision) {
+        if (!collision.gameObject.CompareTag("Enemy")) return;
+        currentHealth--;
+    }
+
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	

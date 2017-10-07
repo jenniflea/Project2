@@ -20,10 +20,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4965696433159492}
   - component: {fileID: 33399528045290066}
-  - component: {fileID: 65600993190944702}
+  - component: {fileID: 65604025658111458}
   - component: {fileID: 54794937762944622}
   - component: {fileID: 114702586218714096}
   - component: {fileID: 114949224196818228}
+  - component: {fileID: 114720935191272672}
   m_Layer: 0
   m_Name: Cube Enemy
   m_TagString: Enemy
@@ -66,7 +67,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!65 &65600993190944702
+--- !u!65 &65604025658111458
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -92,6 +93,19 @@ MonoBehaviour:
   startingPosition: {x: -45, y: -45}
   endingPosition: {x: -45, y: 45}
   speed: 5
+--- !u!114 &114720935191272672
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1134955956295238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a02c6f5eb2ce4c4487a1d59c8909bc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PaintBallSplat: {fileID: 1393951791571776, guid: f70c392a379da29458a352db8ce49973,
+    type: 2}
 --- !u!114 &114949224196818228
 MonoBehaviour:
   m_ObjectHideFlags: 1
