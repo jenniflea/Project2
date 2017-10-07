@@ -41,7 +41,7 @@ public class FPS : MonoBehaviour
     public void Update()
     {
 
-        var m_Mov = GamepadInput.GamePad.GetAxis(GamepadInput.GamePad.Axis.LeftStick, GamepadInput.GamePad.Index.Any, false);
+        var m_Mov = GamepadInput.GamePad.GetAxis(GamepadInput.GamePad.Axis.LeftStick, false);
         m_MovX = m_Mov.x;
         m_MovY = m_Mov.y;
 
@@ -51,7 +51,7 @@ public class FPS : MonoBehaviour
         m_velocity = (m_moveHorizontal + m_movVertical).normalized * speed;
 
         //mouse movement 
-        var m_Rot = GamepadInput.GamePad.GetAxis(GamepadInput.GamePad.Axis.RightStick, GamepadInput.GamePad.Index.Any, false);
+        var m_Rot = GamepadInput.GamePad.GetAxis(GamepadInput.GamePad.Axis.RightStick, false);
         m_xRot = m_Rot.x;
         m_rotation = new Vector3(0, m_xRot, 0) * m_lookSensitivity;
 

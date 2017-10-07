@@ -17,7 +17,7 @@ public class PaintGun : MonoBehaviour {
         // Show an estimate of where the bullet will go
         RaycastHit raycastHit = new RaycastHit();
         if (Physics.Raycast(transform.position, transform.forward, out raycastHit, 150.0f)) {
-            target.transform.position = raycastHit.point;
+            target.transform.position = raycastHit.point + raycastHit.normal*0.02f;
             target.transform.rotation = raycastHit.transform.rotation;
         }
     }
