@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23757493011118608}
   - component: {fileID: 54703365335313102}
   - component: {fileID: 114209225834547382}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,5 +121,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a02c6f5eb2ce4c4487a1d59c8909bc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PaintBallSplat: {fileID: 1978986380884186, guid: 8c75d3570f789594b80d8571168203c5,
+  PaintBallSplat: {fileID: 1091991850301832, guid: 686ae004b1f9a114d9acbe6a4c854b40,
     type: 2}
