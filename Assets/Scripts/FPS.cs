@@ -27,7 +27,6 @@ public class FPS : MonoBehaviour
     private Vector3 m_rotation;
     private Vector3 m_cameraRotation;
     private float m_lookSensitivity = 3.0f;
-    private bool m_cursorIsLocked = true;
 
     [Header("The Camera the player looks through")]
     public Camera m_Camera;

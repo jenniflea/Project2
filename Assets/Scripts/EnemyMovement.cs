@@ -2,28 +2,64 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class EnemyMovement : MonoBehaviour {
 
-    public GameObject PaintPrefab;
-    private Vector3 goal1;
-    private Rigidbody rb;
-    private float speed = 5.0f;
+    [Tooltip("x and z axes of the starting position of the enemy")]
+    public Vector2 startingPosition; 
 
-    private void Awake() {
-        goal1 = new Vector3(30, 2, 30);
-        rb = GetComponent<Rigidbody>();
+    [Tooltip("x and z axes of the ending position of the enemy")]
+    public Vector2 endingPosition;
+    public float speed;
+
+    private Rigidbody rb;
+    private Vector3 startingPos;
+    private Vector3 endingPos;
+    private bool isMovingToEndPos;
+
+    private Vector3 CurrentGoal {
+        get {
+            if (isMovingToEndPos) return endingPos;
+            else return startingPos;
+        }
     }
 
-    // Use this for initialization
-    void Start () {
-        rb.velocity = (transform.position - goal1).normalized * speed;
-        StartCoroutine("AddPaintTrail");
-	}
-	
-    IEnumerator AddPaintTrail() {
+    private void Awake() {
+       rb = GetComponent<Rigidbody>();
+       isMovingToEndPos = true;
+    }
+
+    private void Start() {
+        startingPos = new Vector3(startingPosition.x, transform.position.y, startingPosition.y);
+        endingPos = new Vector3(endingPosition.x, transform.position.y, endingPosition.y);
+        transform.position = startingPos;
+        StartCoroutine("TimedMovement");
+    }
+
+    IEnumerator TimedMovement() {
         while (true) {
-            Instantiate(PaintPrefab, transform.position + Vector3.down*2, transform.rotation);
-            yield return new WaitForSeconds(0.25f);
+
+            // If other side is reached
+            if (Vector3.Distance(transform.position, CurrentGoal) / 100 < 0.001) {
+                rb.isKinematic = true;
+
+                // Turn around 180 degrees
+                for (int rotation = 0; rotation <= 180; rotation += 5) {
+                    transform.rotation = Quaternion.Euler(0, rotation, 0);
+                    yield return null;
+                }
+
+                rb.isKinematic = false;
+                isMovingToEndPos = !isMovingToEndPos;
+                Paint.ChangeColor();
+
+                yield return null;
+            
+            // Else move toward other side
+            } else
+                rb.velocity = (CurrentGoal - transform.position).normalized * speed;
+
+            yield return null;
         }
     }
 }
