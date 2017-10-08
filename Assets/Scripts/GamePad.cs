@@ -41,11 +41,11 @@ namespace GamepadInput {
         /// <param name="raw">if raw is false then the controlIndex will be returned with a deadspot</param>
         /// <returns></returns>
         public static Vector2 GetAxis(Axis axis, bool raw = false) {
+            if (Application.platform == RuntimePlatform.WindowsEditor ||
+                Application.platform == RuntimePlatform.WindowsPlayer)
+                currentOS = OS.Windows;
 
             string xName = "", yName = "";
-            OS os = OS.Windows;
-            if (Application.platform == RuntimePlatform.OSXPlayer)
-                os = OS.Mac;
 
             switch (axis) {
                 case Axis.LeftStick:
@@ -53,8 +53,8 @@ namespace GamepadInput {
                     yName = "L_YAxis";
                     break;
                 case Axis.RightStick:
-                    xName = "R_XAxis" + os.ToString();
-                    yName = "R_YAxis" + os.ToString();
+                    xName = "R_XAxis" + currentOS.ToString();
+                    yName = "R_YAxis" + currentOS.ToString();
                     break;
             }
 
