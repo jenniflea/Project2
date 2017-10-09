@@ -1093,6 +1093,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Door: {fileID: 1297331786}
+  enemyMaterial: {fileID: 2100000, guid: 7dd719a3ce88cae45b394548afef5c8a, type: 2}
 --- !u!4 &974497569
 Transform:
   m_ObjectHideFlags: 0
@@ -1614,6 +1615,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1924724083}
   - component: {fileID: 1924724082}
+  - component: {fileID: 1924724084}
   m_Layer: 0
   m_Name: Platform
   m_TagString: Platform
@@ -1646,3 +1648,10 @@ Transform:
   m_Father: {fileID: 1719825009}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &1924724084
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1924724081}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}

@@ -24,17 +24,22 @@ public class Bullet : MonoBehaviour {
         Vector3 position = collision.collider.ClosestPointOnBounds(transform.position + transform.up * -5);
 
         if (collision.gameObject.CompareTag("Enemy")) {
-            PaintBallSplatter.transform.localScale = new Vector3(0.8f, 0.8f, 0);
-            EnemyCounter.EnemyExposed();
-            collision.gameObject.GetComponent<EnemyMovement>().isExposed = true;
+            EnemyCounter.EnemyExposed(collision.gameObject, material.color);
+            Destroy(gameObject);
+            return;
         } else if (collision.gameObject.CompareTag("Floor"))
             PaintBallSplatter.transform.localScale = new Vector3(0.1f, 0.1f, 0);
         else if (collision.gameObject.CompareTag("Ceiling")) {
             Destroy(gameObject);
             return;
-        } else if (collision.gameObject.CompareTag("Platform"))
-            PaintBallSplatter.transform.localScale = new Vector3(0.5f, 1, 0);
-        else
+        } else if (collision.gameObject.CompareTag("Platform")) {
+            if (collision.gameObject.GetComponent<MeshRenderer>() != null) return;
+            MeshRenderer m = collision.gameObject.AddComponent<MeshRenderer>();
+            m.material = PaintBallSplatter.GetComponent<MeshRenderer>().sharedMaterials[0];
+            m.material.SetColor("_Color", material.color);
+            Destroy(gameObject);
+            return;
+        } else
             PaintBallSplatter.transform.localScale = new Vector3(0.1f, 0.2f, 0);
 
         foreach (ContactPoint contact in collision.contacts) {

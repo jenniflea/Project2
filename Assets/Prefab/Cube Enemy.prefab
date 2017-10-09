@@ -19,6 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4965696433159492}
+  - component: {fileID: 33937072035183910}
   - component: {fileID: 65604025658111458}
   - component: {fileID: 54794937762944622}
   - component: {fileID: 114702586218714096}
@@ -43,6 +44,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &33937072035183910
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1134955956295238}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!54 &54794937762944622
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -84,6 +92,7 @@ MonoBehaviour:
   startingPosition: {x: -45, y: -45}
   endingPosition: {x: -45, y: 45}
   speed: 5
+  isExposed: 0
 --- !u!114 &114949224196818228
 MonoBehaviour:
   m_ObjectHideFlags: 1
