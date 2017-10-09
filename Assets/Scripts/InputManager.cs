@@ -6,10 +6,7 @@ public class InputManager : MonoBehaviour {
     public PaintGun paintGun;
 
 	void Update () {
-        if (GamepadInput.GamePad.GetTrigger(GamepadInput.GamePad.Trigger.RightTrigger, false) == 0)
-            return;
-
-        paintGun.ShootBullet();
-		
+        if (GamepadInput.GamePad.GetTrigger(GamepadInput.GamePad.Trigger.RightTrigger, false) == 1)
+            paintGun.ShootBullet();
 	}
 }

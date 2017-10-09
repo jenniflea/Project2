@@ -18,7 +18,7 @@ public class PaintGun : MonoBehaviour {
         RaycastHit raycastHit = new RaycastHit();
         if (Physics.Raycast(transform.position, transform.forward, out raycastHit, 150.0f)) {
             target.transform.position = raycastHit.point + raycastHit.normal*0.02f;
-            target.transform.rotation = raycastHit.transform.rotation;
+            target.transform.rotation = Quaternion.LookRotation(raycastHit.normal);
         }
     }
 

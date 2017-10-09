@@ -82,21 +82,10 @@ namespace GamepadInput {
                 Application.platform == RuntimePlatform.WindowsPlayer)
                 currentOS = OS.Windows;
 
-            switch (currentOS) {
-                case OS.Windows:
-                    if (trigger == Trigger.LeftTrigger)
-                        name = "TriggersLWindows";
-                    else if (trigger == Trigger.RightTrigger)
-                        name = "TriggersRWindows";
-                    break;
-
-                case OS.Mac:
-                    if (trigger == Trigger.LeftTrigger)
-                        name = "TriggersLMac";
-                    else if (trigger == Trigger.RightTrigger)
-                        name = "TriggersRMac";
-                    break;
-            }
+            if (trigger == Trigger.LeftTrigger)
+                name = "TriggersL" + currentOS.ToString();
+            else if (trigger == Trigger.RightTrigger)
+                name = "TriggersR" + currentOS.ToString();
 
             //
             float axis = 0;

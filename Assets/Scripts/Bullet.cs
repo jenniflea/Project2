@@ -1,0 +1,43 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Bullet : MonoBehaviour {
+
+    public GameObject PaintBallSplatter;
+
+    private Material material;
+
+    // Use this for initialization
+    private void Awake() {
+        material = GetComponent<MeshRenderer>().materials[0];
+    }
+
+    void Start () {
+        Color color = new Color(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
+        material.SetColor(Shader.PropertyToID("_Color"), color);
+	}
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Vector3 position = collision.collider.ClosestPointOnBounds(transform.position + transform.up * -5);
+
+        if (collision.gameObject.CompareTag("Enemy"))
+            PaintBallSplatter.transform.localScale = new Vector3(0.5f, 0.5f, 0);
+        else if (collision.gameObject.CompareTag("Floor"))
+            PaintBallSplatter.transform.localScale = new Vector3(0.1f, 0.1f, 0);
+        else if (collision.gameObject.CompareTag("Ceiling")) {
+            Destroy(gameObject);
+            return;
+        } else
+            PaintBallSplatter.transform.localScale = new Vector3(0.1f, 0.2f, 0);
+
+        foreach (ContactPoint contact in collision.contacts) {
+            Vector3 normal = contact.normal * 0.02f;
+            position += normal * 0.02f;
+            var splat = Instantiate(PaintBallSplatter, position, Quaternion.LookRotation(normal), collision.gameObject.transform);
+            splat.GetComponent<MeshRenderer>().materials[0].SetColor(Shader.PropertyToID("_TintColor"), material.color);
+        }
+        Destroy(gameObject);
+    }
+}
