@@ -1,10 +1,13 @@
 fileFormatVersion: 2
 guid: 7c0f8f5a202f1cb46bf7fb20b652c083
-timeCreated: 1507495436
+timeCreated: 1507549476
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - PaintBallSplatter: {fileID: 1091991850301832, guid: 686ae004b1f9a114d9acbe6a4c854b40,
+      type: 2}
+  - helpText: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

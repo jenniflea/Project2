@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class Door : MonoBehaviour {
 
+    public Text helpText;
     private Animator animator;
     private bool DoorIsOpen = false;
 
@@ -22,12 +24,19 @@ public class Door : MonoBehaviour {
         if (!collision.gameObject.CompareTag("Player")) return;
         if (!DoorIsOpen) return;
 
+        helpText.text = "You have won! Congratulations!";
         Debug.Log("You have won! Congratulations!");
-        SceneManager.LoadScene("Main");
+        StartCoroutine("WaitToLoad");
     }
 
     public void OpenDoor() {
+        helpText.text = "Door opened!";
         animator.enabled = true;
         DoorIsOpen = true;
+    }
+
+    IEnumerator WaitToLoad() {
+        yield return new WaitForSeconds(3);
+        SceneManager.LoadScene("Main");
     }
 }

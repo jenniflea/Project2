@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class Bullet : MonoBehaviour {
 
     public GameObject PaintBallSplatter;
-
     private Material material;
 
     // Use this for initialization
@@ -46,8 +46,7 @@ public class Bullet : MonoBehaviour {
         Destroy(gameObject);
 
         if (!PaintGun.HasBulletsRemaining && !EnemyCounter.AllEnemiesExposed) {
-            Debug.Log("No more bullets remaining! All enemies are not exposed.");
-            SceneManager.LoadScene("Main");
+            PaintGun.NoBulletsLeft();
         }
     }
 }
