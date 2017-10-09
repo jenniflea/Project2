@@ -12,7 +12,7 @@ namespace GamepadInput {
         public enum Button { A, B, Y, X, RightShoulder, LeftShoulder, RightStick, LeftStick, Back, Start }
         public enum Trigger { LeftTrigger, RightTrigger }
         public enum Axis { LeftStick, RightStick, Dpad }
-        public enum OS {  Windows, Mac }
+        public enum OS { Windows, Mac }
 
         private static OS currentOS = OS.Mac;
 
@@ -103,19 +103,41 @@ namespace GamepadInput {
 
 
         static KeyCode GetKeycode(Button button) {
+            if (Application.platform == RuntimePlatform.WindowsEditor ||
+                Application.platform == RuntimePlatform.WindowsPlayer)
+                currentOS = OS.Windows;
 
-            switch (button) {
-                case Button.A: return KeyCode.JoystickButton0;
-                case Button.B: return KeyCode.JoystickButton1;
-                case Button.X: return KeyCode.JoystickButton2;
-                case Button.Y: return KeyCode.JoystickButton3;
-                case Button.RightShoulder: return KeyCode.JoystickButton5;
-                case Button.LeftShoulder: return KeyCode.JoystickButton4;
-                case Button.Back: return KeyCode.JoystickButton6;
-                case Button.Start: return KeyCode.JoystickButton7;
-                case Button.LeftStick: return KeyCode.JoystickButton8;
-                case Button.RightStick: return KeyCode.JoystickButton9;
-            }
+            switch (currentOS) {
+                case OS.Windows:
+                    switch (button) {
+                        case Button.A: return KeyCode.JoystickButton0;
+                        case Button.B: return KeyCode.JoystickButton1;
+                        case Button.X: return KeyCode.JoystickButton2;
+                        case Button.Y: return KeyCode.JoystickButton3;
+                        case Button.RightShoulder: return KeyCode.JoystickButton5;
+                        case Button.LeftShoulder: return KeyCode.JoystickButton4;
+                        case Button.Back: return KeyCode.JoystickButton6;
+                        case Button.Start: return KeyCode.JoystickButton7;
+                        case Button.LeftStick: return KeyCode.JoystickButton8;
+                        case Button.RightStick: return KeyCode.JoystickButton9;
+                    }
+                    break;
+                case OS.Mac:
+                    switch (button) {
+                        case Button.A: return KeyCode.JoystickButton16;
+                        case Button.B: return KeyCode.JoystickButton17;
+                        case Button.X: return KeyCode.JoystickButton18;
+                        case Button.Y: return KeyCode.JoystickButton19;
+                        case Button.RightShoulder: return KeyCode.JoystickButton14;
+                        case Button.LeftShoulder: return KeyCode.JoystickButton13;
+                        case Button.Back: return KeyCode.JoystickButton10;
+                        case Button.Start: return KeyCode.JoystickButton9;
+                        case Button.LeftStick: return KeyCode.JoystickButton11;
+                        case Button.RightStick: return KeyCode.JoystickButton12;
+                    }
+                    break;
+                }
+
             return KeyCode.None;
         }
 

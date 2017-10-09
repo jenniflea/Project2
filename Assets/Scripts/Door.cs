@@ -36,7 +36,7 @@ public class Door : MonoBehaviour {
     }
 
     IEnumerator WaitToLoad() {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1);
         SceneManager.LoadScene("Main");
     }
 }
