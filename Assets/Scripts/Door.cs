@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Door : MonoBehaviour {
 
@@ -13,7 +14,7 @@ public class Door : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-//        animator.StopPlayback();
+        animator.enabled = false;
 	}
 
     private void OnCollisionEnter(Collision collision) {
@@ -21,10 +22,11 @@ public class Door : MonoBehaviour {
         if (!DoorIsOpen) return;
 
         Debug.Log("You have won! Congratulations!");
+        SceneManager.LoadScene("Main");
     }
 
     public void OpenDoor() {
-        animator.Play("Door");
+        animator.enabled = true;
         DoorIsOpen = true;
     }
 }

@@ -18,25 +18,28 @@ public class Bullet : MonoBehaviour {
         material.SetColor(Shader.PropertyToID("_Color"), color);
 	}
 
-    private void OnCollisionEnter(Collision collision)
-    {
+    private void OnCollisionEnter(Collision collision) {
+        if (collision.gameObject.CompareTag("Player")) return;
         Vector3 position = collision.collider.ClosestPointOnBounds(transform.position + transform.up * -5);
 
-        if (collision.gameObject.CompareTag("Enemy"))
-            PaintBallSplatter.transform.localScale = new Vector3(0.5f, 0.5f, 0);
-        else if (collision.gameObject.CompareTag("Floor"))
+        if (collision.gameObject.CompareTag("Enemy")) {
+            PaintBallSplatter.transform.localScale = new Vector3(0.8f, 0.8f, 0);
+            EnemyCounter.EnemyExposed();
+        } else if (collision.gameObject.CompareTag("Floor"))
             PaintBallSplatter.transform.localScale = new Vector3(0.1f, 0.1f, 0);
         else if (collision.gameObject.CompareTag("Ceiling")) {
             Destroy(gameObject);
             return;
-        } else
+        } else if (collision.gameObject.CompareTag("Platform"))
+            PaintBallSplatter.transform.localScale = new Vector3(0.5f, 1, 0);
+        else
             PaintBallSplatter.transform.localScale = new Vector3(0.1f, 0.2f, 0);
 
         foreach (ContactPoint contact in collision.contacts) {
             Vector3 normal = contact.normal * 0.02f;
             position += normal * 0.02f;
             var splat = Instantiate(PaintBallSplatter, position, Quaternion.LookRotation(normal), collision.gameObject.transform);
-            splat.GetComponent<MeshRenderer>().materials[0].SetColor(Shader.PropertyToID("_TintColor"), material.color);
+            splat.GetComponent<MeshRenderer>().materials[0].SetColor(Shader.PropertyToID("_Color"), material.color);
         }
         Destroy(gameObject);
     }

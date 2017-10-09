@@ -4,17 +4,31 @@ using UnityEngine;
 
 public class EnemyCounter : MonoBehaviour {
 
-    private int totalEnemies;
-    private int exposedEnemies;
+    public static int totalEnemies;
+    public GameObject Door;
+    public static EnemyCounter instance;
 
-    public EnemyCounter instance;
+    private static int exposedEnemies = 0;
+    private Door door;
 
-	// Use this for initialization
-	void Start () {
-        if (instance == null) {
+    private void Awake() {
+        door = Door.GetComponent<Door>();
+    }
+
+    private void Start() {
+        if (instance == null)
             instance = this;
-        } else {
+        else
             Destroy(this);
+
+        totalEnemies = 1;
+    }
+
+    public static void EnemyExposed() {
+        exposedEnemies++;
+
+        if (exposedEnemies == totalEnemies) {
+            instance.door.OpenDoor();
         }
-	}
+    }
 }
