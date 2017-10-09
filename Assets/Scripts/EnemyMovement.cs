@@ -11,6 +11,7 @@ public class EnemyMovement : MonoBehaviour {
     [Tooltip("x and z axes of the ending position of the enemy")]
     public Vector2 endingPosition;
     public float speed;
+    public bool isExposed = false;
 
     private Rigidbody rb;
     private Vector3 startingPos;

@@ -8,11 +8,18 @@ public class EnemyCounter : MonoBehaviour {
     public GameObject Door;
     public static EnemyCounter instance;
 
-    private static int exposedEnemies = 0;
+    public static bool AllEnemiesExposed {
+        get {
+            return exposedEnemies >= totalEnemies;
+        }
+    }
+
+    private static int exposedEnemies;
     private Door door;
 
     private void Awake() {
         door = Door.GetComponent<Door>();
+        exposedEnemies = 0;
     }
 
     private void Start() {

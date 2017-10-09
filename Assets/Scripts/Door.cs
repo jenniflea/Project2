@@ -15,6 +15,7 @@ public class Door : MonoBehaviour {
     // Use this for initialization
     void Start () {
         animator.enabled = false;
+        DoorIsOpen = false;
 	}
 
     private void OnCollisionEnter(Collision collision) {

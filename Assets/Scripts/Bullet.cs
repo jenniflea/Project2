@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Bullet : MonoBehaviour {
 
@@ -25,6 +26,7 @@ public class Bullet : MonoBehaviour {
         if (collision.gameObject.CompareTag("Enemy")) {
             PaintBallSplatter.transform.localScale = new Vector3(0.8f, 0.8f, 0);
             EnemyCounter.EnemyExposed();
+            collision.gameObject.GetComponent<EnemyMovement>().isExposed = true;
         } else if (collision.gameObject.CompareTag("Floor"))
             PaintBallSplatter.transform.localScale = new Vector3(0.1f, 0.1f, 0);
         else if (collision.gameObject.CompareTag("Ceiling")) {
@@ -42,5 +44,10 @@ public class Bullet : MonoBehaviour {
             splat.GetComponent<MeshRenderer>().materials[0].SetColor(Shader.PropertyToID("_Color"), material.color);
         }
         Destroy(gameObject);
+
+        if (!PaintGun.HasBulletsRemaining && !EnemyCounter.AllEnemiesExposed) {
+            Debug.Log("No more bullets remaining! All enemies are not exposed.");
+            SceneManager.LoadScene("Main");
+        }
     }
 }
