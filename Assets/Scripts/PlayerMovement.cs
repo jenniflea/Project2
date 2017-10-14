@@ -18,7 +18,8 @@ public class PlayerMovement : MonoBehaviour {
     private float m_MovX;
     private float m_MovY;
     private Vector3 m_moveHorizontal;
-    private Vector3 m_movVertical;
+    private Vector3 m_movForward;
+    private float m_verticalVelocity;
     private Vector3 m_velocity;
     private Rigidbody m_Rigid;
     private float m_yRot;
@@ -26,9 +27,7 @@ public class PlayerMovement : MonoBehaviour {
     private Vector3 m_rotation;
     private Vector3 m_cameraRotation;
     private float m_lookSensitivity = 3.0f;
-    private int currentFrame = 0;
-    private int numberJumpFrames = 60;
-    private bool isJumping = false;
+    private bool isOnFloor = false;
 
     [Header("The Camera the player looks through")]
     public Camera m_Camera;
@@ -55,14 +54,14 @@ public class PlayerMovement : MonoBehaviour {
         m_MovY = m_Mov.y;
 
         m_moveHorizontal = transform.right * m_MovX;
-        m_movVertical = transform.forward * m_MovY;
+        m_movForward = transform.forward * m_MovY;
+        if (isOnFloor && GamepadInput.GamePad.GetButtonDown(GamepadInput.GamePad.Button.A))
+            m_verticalVelocity = 1000;
+        else
+            m_verticalVelocity = 0;
+   }
 
-        if (!isJumping) 
-            isJumping = GamepadInput.GamePad.GetButtonDown(GamepadInput.GamePad.Button.X);
-        var m_jump = isJumping ? Vector3.up : Vector3.zero;
-
-        m_velocity = (m_moveHorizontal + m_movVertical + m_jump).normalized * speed;
-
+    private void FixedUpdate() {
         //rotate the camera of the player
         if (m_rotation != Vector3.zero) {
             m_Rigid.MoveRotation(m_Rigid.rotation * Quaternion.Euler(m_rotation));
@@ -73,20 +72,18 @@ public class PlayerMovement : MonoBehaviour {
             m_Camera.transform.Rotate(-m_cameraRotation);
         }
 
-        //move the actual player here
-        if (m_velocity != Vector3.zero) {
-            m_Rigid.MovePosition(m_Rigid.position + m_velocity * Time.fixedDeltaTime);
-        }
+        var otherVelocity = transform.parent != null ? transform.parent.GetComponentInParent<Rigidbody>().velocity : Vector3.zero;
+        var verticalVelocity = m_Rigid.velocity.y + m_verticalVelocity * Time.fixedDeltaTime;
+        m_Rigid.velocity = (m_moveHorizontal + m_movForward).normalized * speed + verticalVelocity * Vector3.up + otherVelocity;
 
-        if (isJumping) {
-            currentFrame++;
+    }
 
-            if (currentFrame >= numberJumpFrames) {
-                isJumping = false;
-                currentFrame = 0;
-            }
+    private void OnCollisionStay(Collision collision) {
+        if (collision.gameObject.name == "Floor")
+            isOnFloor = true;
+    }
 
-        }
-
+    private void OnCollisionExit(Collision collision) {
+        isOnFloor = false;
     }
 }

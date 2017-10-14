@@ -20,34 +20,45 @@ public class Bullet : MonoBehaviour {
 	}
 
     private void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.CompareTag("Player")) return;
-        Vector3 position = collision.collider.ClosestPointOnBounds(transform.position + transform.up * -5);
+        var collidingGameObject = collision.gameObject;
+        if (collidingGameObject.CompareTag("Player")) return;
 
-        if (collision.gameObject.CompareTag("Enemy")) {
-            EnemyCounter.EnemyExposed(collision.gameObject, material.color);
+        // Color enemy
+        if (collidingGameObject.CompareTag("Enemy")) {
+            EnemyCounter.EnemyExposed(collidingGameObject, material.color);
             Destroy(gameObject);
             return;
-        } else if (collision.gameObject.CompareTag("Floor"))
-            PaintBallSplatter.transform.localScale = new Vector3(0.1f, 0.1f, 0);
-        else if (collision.gameObject.CompareTag("Ceiling")) {
-            Destroy(gameObject);
-            return;
-        } else if (collision.gameObject.CompareTag("Platform")) {
-            if (collision.gameObject.GetComponent<MeshRenderer>() != null) return;
-            MeshRenderer m = collision.gameObject.AddComponent<MeshRenderer>();
+        
+        // Color platform
+        } else if (collidingGameObject.CompareTag("Platform")) {
+            if (collidingGameObject.GetComponent<MeshRenderer>() != null) return;
+            MeshRenderer m = collidingGameObject.AddComponent<MeshRenderer>();
             m.material = PaintBallSplatter.GetComponent<MeshRenderer>().sharedMaterials[0];
             m.material.SetColor("_Color", material.color);
             Destroy(gameObject);
             return;
-        } else
+        
+        // Don't splat on ceiling
+        } else if (collision.gameObject.CompareTag("Ceiling")) {
+            Destroy(gameObject);
+            return;
+
+        // Splat on floor
+        } else if (collision.gameObject.CompareTag("Floor"))
+            PaintBallSplatter.transform.localScale = new Vector3(0.1f, 0.1f, 0);
+
+        // Splat on ceiling
+        else
             PaintBallSplatter.transform.localScale = new Vector3(0.1f, 0.2f, 0);
 
-        foreach (ContactPoint contact in collision.contacts) {
-            Vector3 normal = contact.normal * 0.02f;
-            position += normal * 0.02f;
-            var splat = Instantiate(PaintBallSplatter, position, Quaternion.LookRotation(normal), collision.gameObject.transform);
-            splat.GetComponent<MeshRenderer>().materials[0].SetColor(Shader.PropertyToID("_Color"), material.color);
-        }
+        Vector3 position = collision.collider.ClosestPointOnBounds(transform.position + transform.up * -0.5f);
+        ContactPoint c = collision.contacts[0];
+        Vector3 normal = c.normal;
+
+        var splat = Instantiate(PaintBallSplatter, position, Quaternion.LookRotation(normal), collision.gameObject.transform);
+        // Set splat so that it shows up properly on the surface
+        splat.transform.localPosition = new Vector3(splat.transform.localPosition.x, splat.transform.localPosition.y, 0.51f);
+        splat.GetComponent<MeshRenderer>().materials[0].SetColor(Shader.PropertyToID("_Color"), material.color);
         Destroy(gameObject);
 
         if (!PaintGun.HasBulletsRemaining && !EnemyCounter.AllEnemiesExposed) {

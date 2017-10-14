@@ -10,8 +10,8 @@ public class PaintGun : MonoBehaviour {
     public static int totalBullets;
     public Text numBulletsLeft;
     public Text helpText;
+    public static PaintGun instance;
 
-    private static PaintGun instance;
     private GameObject bullet;
     private Rigidbody bulletRB;
     private GameObject target;
@@ -52,14 +52,19 @@ public class PaintGun : MonoBehaviour {
         bullet = Instantiate(bulletPrefab, transform.position + 1.5f*transform.forward, transform.rotation*Quaternion.Euler(90, 0, 0));
         bulletRB = bullet.GetComponent<Rigidbody>();
         bulletRB.AddForce(10000*transform.forward);
-        numBulletsUsed++;
-        numBulletsLeft.text = (totalBullets - numBulletsUsed) + " Bullets";
+        UpdateNumBullets();
     }
 
     public static void NoBulletsLeft() {
         instance.helpText.text = "No more bullets remaining!";
         Debug.Log("No more bullets remaining! All enemies are not exposed.");
         instance.StartCoroutine("WaitToLoad");
+    }
+
+    void UpdateNumBullets() {
+        numBulletsUsed++;
+        numBulletsLeft.text = (totalBullets - numBulletsUsed) + " Bullets";
+
     }
 
     IEnumerator WaitToLoad() {

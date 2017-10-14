@@ -45,8 +45,9 @@ public class EnemyMovement : MonoBehaviour {
                 rb.isKinematic = true;
 
                 // Turn around 180 degrees
-                for (int rotation = 0; rotation <= 180; rotation += 5) {
-                    transform.rotation = Quaternion.Euler(0, rotation, 0);
+                var currentRotation = transform.rotation.eulerAngles.y;
+                for (int rotation = 0; rotation < 180; rotation += 5) {
+                    transform.rotation = Quaternion.Euler(0, currentRotation + rotation, 0);
                     yield return null;
                 }
 
