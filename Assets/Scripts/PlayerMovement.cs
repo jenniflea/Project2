@@ -79,8 +79,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void OnCollisionStay(Collision collision) {
-        if (collision.gameObject.name == "Floor")
-            isOnFloor = true;
+        isOnFloor = true;
     }
 
     private void OnCollisionExit(Collision collision) {

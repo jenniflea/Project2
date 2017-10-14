@@ -33,6 +33,7 @@ public class EnemyCounter : MonoBehaviour {
     }
 
     public static void EnemyExposed(GameObject enemy, Color color) {
+
         if (enemy.GetComponent<EnemyMovement>().isExposed) return;
 
         enemy.GetComponent<EnemyMovement>().isExposed = true;

@@ -1,6 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InputManager : MonoBehaviour {
     private void Start() {
@@ -14,6 +14,10 @@ public class InputManager : MonoBehaviour {
                 PaintGun.instance.ShootBullet();
                 yield return new WaitForSeconds(0.5f);
             }
+
+            if (GamepadInput.GamePad.GetButtonDown(GamepadInput.GamePad.Button.Start))
+                SceneManager.LoadScene("Main");
+
             yield return null;
         }
 

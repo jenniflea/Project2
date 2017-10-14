@@ -19,6 +19,15 @@ public class Bullet : MonoBehaviour {
         material.SetColor(Shader.PropertyToID("_Color"), color);
 	}
 
+    // Color platform
+    private void OnTriggerEnter(Collider other) {
+        if (!other.gameObject.CompareTag("Platform")) return;
+
+        Platform platform = other.gameObject.GetComponent<Platform>();
+        platform.Expose(material.color);
+        Destroy(gameObject);
+    }
+
     private void OnCollisionEnter(Collision collision) {
         var collidingGameObject = collision.gameObject;
         if (collidingGameObject.CompareTag("Player")) return;
@@ -26,15 +35,6 @@ public class Bullet : MonoBehaviour {
         // Color enemy
         if (collidingGameObject.CompareTag("Enemy")) {
             EnemyCounter.EnemyExposed(collidingGameObject, material.color);
-            Destroy(gameObject);
-            return;
-        
-        // Color platform
-        } else if (collidingGameObject.CompareTag("Platform")) {
-            if (collidingGameObject.GetComponent<MeshRenderer>() != null) return;
-            MeshRenderer m = collidingGameObject.AddComponent<MeshRenderer>();
-            m.material = PaintBallSplatter.GetComponent<MeshRenderer>().sharedMaterials[0];
-            m.material.SetColor("_Color", material.color);
             Destroy(gameObject);
             return;
         

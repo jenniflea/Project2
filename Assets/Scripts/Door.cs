@@ -24,8 +24,8 @@ public class Door : MonoBehaviour {
         if (!collision.gameObject.CompareTag("Player")) return;
         if (!DoorIsOpen) return;
 
-        helpText.text = "You have won! Congratulations!";
-        Debug.Log("You have won! Congratulations!");
+        helpText.text = "You won! Congratulations!";
+        Debug.Log("You won! Congratulations!");
         StartCoroutine("WaitToLoad");
     }
 
