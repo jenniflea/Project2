@@ -8,7 +8,9 @@ public class AddPaintBlobs : MonoBehaviour {
 
     private void OnCollisionStay(Collision collision) {
         if (!collision.gameObject.CompareTag("Enemy")) return;
+
         var position = collision.transform.position + -1 * collision.transform.up * collision.transform.localScale.z / 2;
-        Instantiate(PaintBlob, position, collision.transform.rotation);
+        var paint = Instantiate(PaintBlob, position, collision.transform.rotation);
+        paint.GetComponent<Paint>().paintTrail = collision.gameObject.GetComponentInChildren<PaintTrail>();
     }
 }

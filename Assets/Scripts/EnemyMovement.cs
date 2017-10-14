@@ -17,6 +17,7 @@ public class EnemyMovement : MonoBehaviour {
     private Vector3 startingPos;
     private Vector3 endingPos;
     private bool isMovingToEndPos;
+    private PaintTrail paintTrail;
 
     private Vector3 CurrentGoal {
         get {
@@ -28,6 +29,7 @@ public class EnemyMovement : MonoBehaviour {
     private void Awake() {
        rb = GetComponent<Rigidbody>();
        isMovingToEndPos = true;
+        paintTrail = GetComponentInChildren<PaintTrail>();
     }
 
     private void Start() {
@@ -46,14 +48,14 @@ public class EnemyMovement : MonoBehaviour {
 
                 // Turn around 180 degrees
                 var currentRotation = transform.rotation.eulerAngles.y;
-                for (int rotation = 0; rotation < 180; rotation += 5) {
+                for (int rotation = 5; rotation <= 180; rotation += 5) {
                     transform.rotation = Quaternion.Euler(0, currentRotation + rotation, 0);
                     yield return null;
                 }
 
                 rb.isKinematic = false;
                 isMovingToEndPos = !isMovingToEndPos;
-                Paint.ChangeColor();
+                paintTrail.ChangeColor();
 
                 yield return null;
             
