@@ -4,7 +4,19 @@ using UnityEngine;
 
 public class PaintTrail : MonoBehaviour {
 
-    internal int CurrentColor = 0;
+    internal int CurrentColor;
+    internal int Counter;
+
+    private void Start() {
+        CurrentColor = 0;
+        Counter = -32000;
+    }
+
+    public int Layer() {
+        int layer = Counter;
+        Counter++;
+        return layer;
+    }
 
     public void ChangeColor() {
         if (CurrentColor >= 3)

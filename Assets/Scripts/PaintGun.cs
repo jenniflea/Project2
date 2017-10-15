@@ -24,7 +24,7 @@ public class PaintGun : MonoBehaviour {
 
     private void Start() {
         target = Instantiate(targetPrefab, transform.position, targetPrefab.transform.rotation);
-        totalBullets = 20;
+        totalBullets = 15;
         numBulletsUsed = 0;
         numBulletsLeft.text = totalBullets + " Bullets";
         helpText.text = "";

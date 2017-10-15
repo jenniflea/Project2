@@ -9,6 +9,9 @@ public class Health : MonoBehaviour {
     public int currentHealth;
     public Text healthText;
     public Text helpText;
+    public GameObject Panel;
+
+    private bool invincible = false;
 
     private void Start() {
         currentHealth = 5;
@@ -16,16 +19,53 @@ public class Health : MonoBehaviour {
     }
 
     private void OnCollisionEnter(Collision collision) {
+        LowerHealth(collision);
+    }
+
+    private void OnCollisionStay(Collision collision) {
+        LowerHealth(collision);
+    }
+
+    private void LowerHealth(Collision collision) {
         if (!collision.gameObject.CompareTag("Enemy")) return;
         if (collision.gameObject.GetComponent<EnemyMovement>().isExposed) return;
-        currentHealth--;
+        if (invincible) return;
+
+       currentHealth--;
+        if (currentHealth < 0)
+            currentHealth = 0;
         healthText.text = "Health: " + currentHealth;
+        StartCoroutine("Invincibility", collision);
 
         if (currentHealth <= 0) {
             Debug.Log("Out of health!");
             helpText.text = "Out of Health!";
             StartCoroutine("WaitToLoad");
         }
+    }
+
+    IEnumerator Invincibility(Collision collision) {
+        invincible = true;
+        Color oldTextColor = healthText.color;
+        int oldFontSize = healthText.fontSize;
+
+        healthText.color = Color.red;
+        healthText.fontSize = 24;
+        healthText.fontStyle = FontStyle.Bold;
+
+        helpText.text = "Hit by Invisible " + collision.gameObject.name + "!";
+        for (int seconds = 0; seconds < 4; seconds++) {
+            Panel.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            Panel.SetActive(false);
+            yield return new WaitForSeconds(0.5f);
+        }
+        helpText.text = "";
+
+        invincible = false;
+        healthText.color = oldTextColor;
+        healthText.fontSize = oldFontSize;
+        healthText.fontStyle = FontStyle.Normal;
     }
 
     IEnumerator WaitToLoad() {

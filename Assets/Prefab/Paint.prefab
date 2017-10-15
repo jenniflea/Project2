@@ -110,3 +110,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ced79af93675e9e418b42022dab9d18e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  paintTrail: {fileID: 0}

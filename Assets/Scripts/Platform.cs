@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Platform : MonoBehaviour {
-    public bool isExposed = false;
+    public bool isExposed;
     public bool hasDynamicShadow = false;
     public GameObject shadowPrefab;
 
     private GameObject shadow;
 
     private void Start() {
+        isExposed = false;
+
         if (!hasDynamicShadow) return;
         shadow = Instantiate(shadowPrefab, transform.position, transform.rotation);
         shadow.transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, 0);

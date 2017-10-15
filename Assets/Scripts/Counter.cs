@@ -45,7 +45,7 @@ public class Counter : MonoBehaviour {
             Destroy(this);
 
         totalEnemies = 4;
-        totalPlatforms = 3;
+        totalPlatforms = 4;
     }
 
     public static void EnemyExposed(GameObject enemy, Color color) {

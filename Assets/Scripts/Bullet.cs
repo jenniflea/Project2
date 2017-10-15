@@ -8,9 +8,13 @@ public class Bullet : MonoBehaviour {
 
     public GameObject PaintBallSplatter;
     private Material material;
+    private static int counter;
 
     // Use this for initialization
     private void Awake() {
+        if (counter == -1)
+            counter = 0;
+
         material = GetComponent<MeshRenderer>().materials[0];
     }
 
@@ -53,9 +57,9 @@ public class Bullet : MonoBehaviour {
         Vector3 normal = c.normal;
 
         var splat = Instantiate(PaintBallSplatter, position, Quaternion.LookRotation(normal), collision.gameObject.transform);
-        // Set splat so that it shows up properly on the surface
-        splat.transform.localPosition = new Vector3(splat.transform.localPosition.x, splat.transform.localPosition.y, 0.501f);
+        splat.transform.localPosition = new Vector3(splat.transform.localPosition.x, splat.transform.localPosition.y, 0.501f + 0.00005f*counter);
         splat.GetComponent<MeshRenderer>().materials[0].SetColor(Shader.PropertyToID("_Color"), material.color);
+        counter++;
         Destroy(gameObject);
 
         if (!PaintGun.HasBulletsRemaining && !Counter.DoorIsOpen) {
