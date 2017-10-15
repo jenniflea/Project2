@@ -39,7 +39,7 @@ public class PaintGun : MonoBehaviour {
         // Show an estimate of where the bullet will go
         RaycastHit raycastHit = new RaycastHit();
         if (Physics.Raycast(transform.position, transform.forward, out raycastHit, 150.0f)) {
-            target.transform.position = raycastHit.point + raycastHit.normal;
+            target.transform.position = raycastHit.point + raycastHit.normal*0.05f;
             target.transform.rotation = Quaternion.LookRotation(raycastHit.normal);
         }
     }
@@ -62,7 +62,6 @@ public class PaintGun : MonoBehaviour {
     void UpdateNumBullets() {
         numBulletsUsed++;
         numBulletsLeft.text = (totalBullets - numBulletsUsed) + " Bullets";
-
     }
 
     IEnumerator WaitToLoad() {

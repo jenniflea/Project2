@@ -19,35 +19,32 @@ public class Bullet : MonoBehaviour {
         material.SetColor(Shader.PropertyToID("_Color"), color);
 	}
 
-    // Color platform
-    private void OnTriggerEnter(Collider other) {
-        if (!other.gameObject.CompareTag("Platform")) return;
-
-        Platform platform = other.gameObject.GetComponent<Platform>();
-        platform.Expose(material.color);
-        Destroy(gameObject);
-    }
-
     private void OnCollisionEnter(Collision collision) {
         var collidingGameObject = collision.gameObject;
         if (collidingGameObject.CompareTag("Player")) return;
 
         // Color enemy
         if (collidingGameObject.CompareTag("Enemy")) {
-            EnemyCounter.EnemyExposed(collidingGameObject, material.color);
+            Counter.EnemyExposed(collidingGameObject, material.color);
+            Destroy(gameObject);
+            return;
+
+        // Color platform
+        } else if (collidingGameObject.CompareTag("Platform")) {
+            Counter.PlatformExposed(collidingGameObject, material.color);
             Destroy(gameObject);
             return;
         
         // Don't splat on ceiling
-        } else if (collision.gameObject.CompareTag("Ceiling")) {
+        } else if (collidingGameObject.CompareTag("Ceiling")) {
             Destroy(gameObject);
             return;
 
         // Splat on floor
-        } else if (collision.gameObject.CompareTag("Floor"))
+        } else if (collidingGameObject.CompareTag("Floor"))
             PaintBallSplatter.transform.localScale = new Vector3(0.1f, 0.1f, 0);
 
-        // Splat on ceiling
+        // Splat on walls
         else
             PaintBallSplatter.transform.localScale = new Vector3(0.1f, 0.2f, 0);
 
@@ -57,11 +54,11 @@ public class Bullet : MonoBehaviour {
 
         var splat = Instantiate(PaintBallSplatter, position, Quaternion.LookRotation(normal), collision.gameObject.transform);
         // Set splat so that it shows up properly on the surface
-        splat.transform.localPosition = new Vector3(splat.transform.localPosition.x, splat.transform.localPosition.y, 0.51f);
+        splat.transform.localPosition = new Vector3(splat.transform.localPosition.x, splat.transform.localPosition.y, 0.501f);
         splat.GetComponent<MeshRenderer>().materials[0].SetColor(Shader.PropertyToID("_Color"), material.color);
         Destroy(gameObject);
 
-        if (!PaintGun.HasBulletsRemaining && !EnemyCounter.AllEnemiesExposed) {
+        if (!PaintGun.HasBulletsRemaining && !Counter.DoorIsOpen) {
             PaintGun.NoBulletsLeft();
         }
     }

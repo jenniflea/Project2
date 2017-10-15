@@ -12,6 +12,7 @@ public class EnemyMovement : MonoBehaviour {
     public Vector2 endingPosition;
     public float speed;
     public bool isExposed = false;
+    public bool rotates = true;
 
     private Rigidbody rb;
     private Vector3 startingPos;
@@ -44,16 +45,20 @@ public class EnemyMovement : MonoBehaviour {
 
             // If other side is reached
             if (Vector3.Distance(transform.position, CurrentGoal) / 100 < 0.001) {
-                rb.isKinematic = true;
 
-                // Turn around 180 degrees
-                var currentRotation = transform.rotation.eulerAngles.y;
-                for (int rotation = 5; rotation <= 180; rotation += 5) {
-                    transform.rotation = Quaternion.Euler(0, currentRotation + rotation, 0);
-                    yield return null;
+                if (rotates) {
+                    rb.isKinematic = true;
+                    // Turn around 180 degrees
+                    var currentRotation = transform.rotation.eulerAngles.y;
+                    for (int rotation = 5; rotation <= 180; rotation += 5)
+                    {
+                        transform.rotation = Quaternion.Euler(0, currentRotation + rotation, 0);
+                        yield return null;
+                    }
+
+                    rb.isKinematic = false;
                 }
 
-                rb.isKinematic = false;
                 isMovingToEndPos = !isMovingToEndPos;
                 paintTrail.ChangeColor();
 

@@ -28,13 +28,17 @@ public class PlayerMovement : MonoBehaviour {
     private Vector3 m_cameraRotation;
     private float m_lookSensitivity = 3.0f;
     private bool isOnFloor = false;
+    private GameObject shadow;
 
     [Header("The Camera the player looks through")]
     public Camera m_Camera;
+    public GameObject shadowPrefab;
 
     // Use this for initialization
     private void Start() {
         m_Rigid = GetComponent<Rigidbody>();
+        shadow = Instantiate(shadowPrefab, transform.position + transform.up * -1 * transform.localScale.y, transform.rotation);
+        shadow.transform.localScale = new Vector3(3, 0, 3);
     }
 
     // Update is called once per frame
@@ -56,9 +60,9 @@ public class PlayerMovement : MonoBehaviour {
         m_moveHorizontal = transform.right * m_MovX;
         m_movForward = transform.forward * m_MovY;
         if (isOnFloor && GamepadInput.GamePad.GetButtonDown(GamepadInput.GamePad.Button.A))
-            m_verticalVelocity = 1000;
+            m_verticalVelocity = m_Rigid.velocity.y + 14;
         else
-            m_verticalVelocity = 0;
+            m_verticalVelocity = m_Rigid.velocity.y;
    }
 
     private void FixedUpdate() {
@@ -71,11 +75,14 @@ public class PlayerMovement : MonoBehaviour {
             //negate this value so it rotates like a FPS not like a plane
             m_Camera.transform.Rotate(-m_cameraRotation);
         }
-
         var otherVelocity = transform.parent != null ? transform.parent.GetComponentInParent<Rigidbody>().velocity : Vector3.zero;
-        var verticalVelocity = m_Rigid.velocity.y + m_verticalVelocity * Time.fixedDeltaTime;
-        m_Rigid.velocity = (m_moveHorizontal + m_movForward).normalized * speed + verticalVelocity * Vector3.up + otherVelocity;
+        m_Rigid.velocity = (m_moveHorizontal + m_movForward).normalized * speed + m_verticalVelocity * Vector3.up + otherVelocity;
 
+        RaycastHit raycastHit;
+        if (Physics.Raycast(transform.position, transform.up * -1, out raycastHit, 30.0f)) {
+            shadow.transform.position = raycastHit.point + raycastHit.normal * 0.01f;
+            shadow.transform.rotation = transform.rotation;
+        }
     }
 
     private void OnCollisionStay(Collision collision) {
