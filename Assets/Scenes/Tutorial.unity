@@ -328,7 +328,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4522236915033838, guid: d027b69bfc3348949bbcf991b4d1a032, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -49.999
+      value: -49.79
       objectReference: {fileID: 0}
     - target: {fileID: 4522236915033838, guid: d027b69bfc3348949bbcf991b4d1a032, type: 2}
       propertyPath: m_LocalPosition.y
@@ -1302,6 +1302,26 @@ Prefab:
     - target: {fileID: 114722318174796886, guid: 5e0e5bb78e3ccf348981a0481f0e6ba8,
         type: 2}
       propertyPath: TutorialMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114526252020007602, guid: 5e0e5bb78e3ccf348981a0481f0e6ba8,
+        type: 2}
+      propertyPath: TutorialMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 20066224807004280, guid: 5e0e5bb78e3ccf348981a0481f0e6ba8,
+        type: 2}
+      propertyPath: m_BackGroundColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 20066224807004280, guid: 5e0e5bb78e3ccf348981a0481f0e6ba8,
+        type: 2}
+      propertyPath: m_BackGroundColor.g
+      value: 0.83448267
+      objectReference: {fileID: 0}
+    - target: {fileID: 20066224807004280, guid: 5e0e5bb78e3ccf348981a0481f0e6ba8,
+        type: 2}
+      propertyPath: m_BackGroundColor.b
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

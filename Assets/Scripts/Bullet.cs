@@ -57,8 +57,9 @@ public class Bullet : MonoBehaviour {
         Vector3 normal = c.normal;
 
         var splat = Instantiate(PaintBallSplatter, position, Quaternion.LookRotation(normal), collision.gameObject.transform);
-        splat.transform.localPosition = new Vector3(splat.transform.localPosition.x, splat.transform.localPosition.y, 0.501f + 0.00005f*counter);
+        splat.transform.localPosition = new Vector3(splat.transform.localPosition.x, splat.transform.localPosition.y, 0.501f + 0.001f*counter);
         splat.GetComponent<MeshRenderer>().materials[0].SetColor(Shader.PropertyToID("_Color"), material.color);
+        splat.GetComponent<MeshRenderer>().sortingOrder = counter;
         counter++;
         Destroy(gameObject);
 
