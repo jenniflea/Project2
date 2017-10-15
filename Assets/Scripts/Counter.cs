@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Counter : MonoBehaviour {
 
-    public int totalEnemies;
-    public int totalPlatforms;
+    public int totalEnemies = 4;
+    public int totalPlatforms = 4;
     public GameObject Door;
     public static Counter instance;
     public Material material;
@@ -43,9 +43,6 @@ public class Counter : MonoBehaviour {
             instance = this;
         else
             Destroy(this);
-
-        totalEnemies = 4;
-        totalPlatforms = 4;
     }
 
     public static void EnemyExposed(GameObject enemy, Color color) {

@@ -7,10 +7,11 @@ public class PaintGun : MonoBehaviour {
 
     public GameObject bulletPrefab;
     public GameObject targetPrefab;
-    public static int totalBullets;
+    public int totalBullets = 15;
     public Text numBulletsLeft;
     public Text helpText;
     public static PaintGun instance;
+    public bool TutorialMode = false;
 
     private Rigidbody bulletRB;
     private GameObject target;
@@ -18,15 +19,19 @@ public class PaintGun : MonoBehaviour {
 
     public static bool HasBulletsRemaining {
         get {
-            return numBulletsUsed < totalBullets;
+            return numBulletsUsed < instance.totalBullets;
         }
     }
 
     private void Start() {
         target = Instantiate(targetPrefab, transform.position, targetPrefab.transform.rotation);
-        totalBullets = 15;
         numBulletsUsed = 0;
-        numBulletsLeft.text = totalBullets + " Bullets";
+        if (TutorialMode)
+            numBulletsLeft.text = "∞";
+        else
+            numBulletsLeft.text = totalBullets.ToString();
+        numBulletsLeft.text += " Bullets";
+
         helpText.text = "";
 
         if (instance == null)
@@ -60,6 +65,7 @@ public class PaintGun : MonoBehaviour {
     }
 
     void UpdateNumBullets() {
+        if (TutorialMode) return;
         numBulletsUsed++;
         numBulletsLeft.text = (totalBullets - numBulletsUsed) + " Bullets";
     }

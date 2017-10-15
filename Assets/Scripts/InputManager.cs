@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class InputManager : MonoBehaviour {
+
     private void Start() {
         StartCoroutine("WaitForInput");
     }
@@ -16,7 +17,7 @@ public class InputManager : MonoBehaviour {
             }
 
             if (GamepadInput.GamePad.GetButtonDown(GamepadInput.GamePad.Button.Start))
-                SceneManager.LoadScene("Main");
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
             yield return null;
         }

@@ -12,7 +12,6 @@ public class EnemyMovement : MonoBehaviour {
     public Vector2 endingPosition;
     public float speed;
     public bool isExposed = false;
-    public bool rotates = true;
 
     private Rigidbody rb;
     private Vector3 startingPos;
@@ -28,8 +27,8 @@ public class EnemyMovement : MonoBehaviour {
     }
 
     private void Awake() {
-       rb = GetComponent<Rigidbody>();
-       isMovingToEndPos = true;
+        rb = GetComponent<Rigidbody>();
+        isMovingToEndPos = true;
         paintTrail = GetComponentInChildren<PaintTrail>();
     }
 
@@ -37,38 +36,16 @@ public class EnemyMovement : MonoBehaviour {
         startingPos = new Vector3(startingPosition.x, transform.position.y, startingPosition.y);
         endingPos = new Vector3(endingPosition.x, transform.position.y, endingPosition.y);
         transform.position = startingPos;
-        StartCoroutine("TimedMovement");
     }
 
-    IEnumerator TimedMovement() {
-        while (true) {
-
-            // If other side is reached
-            if (Vector3.Distance(transform.position, CurrentGoal) / 100 < 0.001) {
-
-                if (rotates) {
-                    rb.isKinematic = true;
-                    // Turn around 180 degrees
-                    var currentRotation = transform.rotation.eulerAngles.y;
-                    for (int rotation = 5; rotation <= 180; rotation += 5)
-                    {
-                        transform.rotation = Quaternion.Euler(0, currentRotation + rotation, 0);
-                        yield return null;
-                    }
-
-                    rb.isKinematic = false;
-                }
-
-                isMovingToEndPos = !isMovingToEndPos;
-                paintTrail.ChangeColor();
-
-                yield return null;
-            
-            // Else move toward other side
-            } else
-                rb.velocity = (CurrentGoal - transform.position).normalized * speed;
-
-            yield return null;
-        }
+    private void FixedUpdate() {
+        // If other side is reached
+        if (Vector3.Distance(transform.position, CurrentGoal) / 100 < 0.001) {
+            isMovingToEndPos = !isMovingToEndPos;
+            paintTrail.ChangeColor();
+        
+        // Else move toward other side
+        } else
+            rb.velocity = (CurrentGoal - transform.position).normalized * speed;
     }
 }

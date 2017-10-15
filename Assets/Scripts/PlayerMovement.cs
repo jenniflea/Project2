@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour {
     private float m_xRot;
     private Vector3 m_rotation;
     private Vector3 m_cameraRotation;
-    private float m_lookSensitivity = 3.0f;
+    private float m_lookSensitivity = 1.5f;
     private bool isOnFloor = false;
     private GameObject shadow;
 

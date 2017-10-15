@@ -20,12 +20,11 @@ public class Door : MonoBehaviour {
         DoorIsOpen = false;
 	}
 
-    private void OnCollisionEnter(Collision collision) {
-        if (!collision.gameObject.CompareTag("Player")) return;
+    private void OnTriggerEnter(Collider other) {
+        if (!other.gameObject.CompareTag("Player")) return;
         if (!DoorIsOpen) return;
 
-        helpText.text = "You won! Congratulations!";
-        Debug.Log("You won! Congratulations!");
+        helpText.text = "Onto the Next Level!";
         StartCoroutine("WaitToLoad");
     }
 

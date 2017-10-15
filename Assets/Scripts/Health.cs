@@ -6,16 +6,20 @@ using UnityEngine.SceneManagement;
 
 public class Health : MonoBehaviour {
 
-    public int currentHealth;
+    public int currentHealth = 5;
     public Text healthText;
     public Text helpText;
     public GameObject Panel;
+    public bool TutorialMode = false;
 
     private bool invincible = false;
 
     private void Start() {
-        currentHealth = 5;
-        healthText.text = "Health: " + currentHealth;
+        healthText.text = "Health: ";
+        if (TutorialMode)
+            healthText.text += "∞";
+        else
+            healthText.text += currentHealth.ToString();
     }
 
     private void OnCollisionEnter(Collision collision) {
@@ -31,10 +35,14 @@ public class Health : MonoBehaviour {
         if (collision.gameObject.GetComponent<EnemyMovement>().isExposed) return;
         if (invincible) return;
 
-       currentHealth--;
-        if (currentHealth < 0)
-            currentHealth = 0;
-        healthText.text = "Health: " + currentHealth;
+        if (!TutorialMode) {
+            currentHealth--;
+
+            if (currentHealth < 0)
+                currentHealth = 0;
+
+            healthText.text = "Health: " + currentHealth;
+        }
         StartCoroutine("Invincibility", collision);
 
         if (currentHealth <= 0) {

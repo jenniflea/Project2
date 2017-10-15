@@ -22,7 +22,7 @@ public class Paint : MonoBehaviour {
     }
 
     IEnumerator WaitToDestroy() {
-        yield return new WaitForSeconds(8);
+        yield return new WaitForSeconds(5);
         Destroy(gameObject);
     }
 
