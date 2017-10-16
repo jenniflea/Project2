@@ -13,3 +13,6 @@ https://freesound.org/people/gprosser/sounds/360942/
 
 Splat_ish.wav (renamed to Enemy Splat.wav):
 https://freesound.org/people/Benboncan/sounds/147541/
+
+Damage.ogg
+https://freesound.org/people/MortisBlack/sounds/385046/
