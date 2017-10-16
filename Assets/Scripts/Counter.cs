@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Counter : MonoBehaviour {
 
     public int totalEnemies = 4;
     public int totalPlatforms = 4;
     public GameObject Door;
+    public Text ItemsSplat;
     public static Counter instance;
     public Material material;
 
@@ -43,27 +45,38 @@ public class Counter : MonoBehaviour {
             instance = this;
         else
             Destroy(this);
+
+        UpdateSplatItemsText();
     }
 
     public static void EnemyExposed(GameObject enemy, Color color) {
         EnemyMovement enemyMovement = enemy.GetComponentInParent<EnemyMovement>();
+        if (enemy.GetComponentInParent<AudioSource>() == null) Debug.Log(enemy.transform.parent.name);
+        enemy.GetComponentInParent<AudioSource>().Play();
         if (enemyMovement.isExposed) return;
 
         exposedEnemies++;
         enemyMovement.isExposed = true;
         AddMaterialToObject(enemy.transform.parent.gameObject, color);
+        instance.UpdateSplatItemsText();
         OpenDoorIfNeeded();
     }
 
     public static void PlatformExposed(GameObject platformObj, Color color) {
         Platform platform = platformObj.GetComponent<Platform>();
+        platformObj.GetComponent<AudioSource>().Play();
         if (platform.isExposed) return;
 
         exposedPlatforms++;
         platform.isExposed = true;
         platformObj.layer = LayerMask.NameToLayer("Default");
         AddMaterialToObject(platformObj, color);
+        instance.UpdateSplatItemsText();
         OpenDoorIfNeeded();
+    }
+
+    private void UpdateSplatItemsText() {
+        ItemsSplat.text = (exposedEnemies + exposedPlatforms).ToString() + "/" + (totalEnemies + totalPlatforms).ToString();
     }
 
     private static void OpenDoorIfNeeded() {

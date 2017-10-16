@@ -10,6 +10,7 @@ public class PlayerRider : MonoBehaviour {
     }
 
     private void OnTriggerExit(Collider other) {
+        if (!other.gameObject.CompareTag("Player")) return;
         other.transform.parent = null;
     }
 }

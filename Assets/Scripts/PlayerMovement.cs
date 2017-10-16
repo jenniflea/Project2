@@ -36,6 +36,7 @@ public class PlayerMovement : MonoBehaviour {
     [Header("The Camera the player looks through")]
     public Camera m_Camera;
     public GameObject shadowPrefab;
+    public static bool hitByEnemy;
 
     // Use this for initialization
     private void Start() {
@@ -80,7 +81,8 @@ public class PlayerMovement : MonoBehaviour {
 
         // Velocity of platform
         var otherVelocity = transform.parent != null ? transform.parent.GetComponentInParent<Rigidbody>().velocity : Vector3.zero;
-        m_Rigid.velocity = (m_moveHorizontal + m_moveForward).normalized * speed + m_verticalVelocity * Vector3.up + otherVelocity;
+        if (!hitByEnemy)
+            m_Rigid.velocity = (m_moveHorizontal + m_moveForward).normalized * speed + m_verticalVelocity * Vector3.up + otherVelocity;
 
         // Update player shadow
         if (Physics.Raycast(transform.position, transform.up * -1, out raycastHit, 30.0f)) {

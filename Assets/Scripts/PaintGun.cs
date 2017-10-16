@@ -75,11 +75,22 @@ public class PaintGun : MonoBehaviour {
     void UpdateNumBullets() {
         if (TutorialMode) return;
         numBulletsUsed++;
-        numBulletsLeft.text = (totalBullets - numBulletsUsed) + " Bullets";
+
+        var bulletsRemaining = totalBullets - numBulletsUsed;
+
+        numBulletsLeft.text = bulletsRemaining.ToString();
+
+        if (bulletsRemaining == 1) {
+            numBulletsLeft.text += " Bullet";
+            numBulletsLeft.fontSize = 24;
+            numBulletsLeft.color = Color.red;
+            numBulletsLeft.fontStyle = FontStyle.Bold;
+        } else
+            numBulletsLeft.text += " Bullets";
     }
 
     IEnumerator WaitToLoad() {
         yield return new WaitForSeconds(1);
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

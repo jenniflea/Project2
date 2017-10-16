@@ -1,0 +1,15 @@
+FPS.cs (renamed to PlayerMovement.cs and heavily edited):
+https://github.com/kinifi/Unity-FPS-Controller
+(Used for calculations for FPS movement)
+
+Gamepad.cs (edited to include Mac support):
+https://www.assetstore.unity3d.com/en/#!/content/10242
+
+Ding.wav:
+https://freesound.org/people/chennes/sounds/376807/
+
+splat.ogg (renamed to Wall Splat.wav):
+https://freesound.org/people/gprosser/sounds/360942/
+
+Splat_ish.wav (renamed to Enemy Splat.wav):
+https://freesound.org/people/Benboncan/sounds/147541/

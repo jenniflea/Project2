@@ -6,20 +6,26 @@ using UnityEngine.SceneManagement;
 
 public class Health : MonoBehaviour {
 
-    public int currentHealth = 5;
+    public int totalHealth = 5;
     public Text healthText;
     public Text helpText;
     public GameObject Panel;
     public bool TutorialMode = false;
 
     private bool invincible = false;
+    private int currentHealth;
+    private AudioSource audioSource;
 
     private void Start() {
+        currentHealth = totalHealth;
+        audioSource = GetComponent<AudioSource>();
+        audioSource.Pause();
+
         healthText.text = "Health: ";
         if (TutorialMode)
             healthText.text += "∞";
         else
-            healthText.text += currentHealth.ToString();
+            healthText.text += currentHealth.ToString() + "/" + totalHealth.ToString();
     }
 
     private void OnCollisionEnter(Collision collision) {
@@ -35,6 +41,8 @@ public class Health : MonoBehaviour {
         if (collision.gameObject.GetComponentInParent<EnemyMovement>().isExposed) return;
         if (invincible) return;
 
+        audioSource.Play();
+
         if (!TutorialMode) {
             currentHealth--;
 
@@ -43,6 +51,8 @@ public class Health : MonoBehaviour {
 
             healthText.text = "Health: " + currentHealth;
         }
+
+        StartCoroutine("HurtByEnemy");
         StartCoroutine("Invincibility", collision);
 
         if (currentHealth <= 0) {
@@ -50,6 +60,14 @@ public class Health : MonoBehaviour {
             helpText.text = "Out of Health!";
             StartCoroutine("WaitToLoad");
         }
+    }
+
+    IEnumerator HurtByEnemy() {
+        PlayerMovement.hitByEnemy = true;
+        yield return new WaitForFixedUpdate();
+        gameObject.GetComponent<Rigidbody>().velocity = -400 * transform.forward;
+        yield return new WaitForFixedUpdate();
+        PlayerMovement.hitByEnemy = false;
     }
 
     IEnumerator Invincibility(Collision collision) {
@@ -78,7 +96,7 @@ public class Health : MonoBehaviour {
 
     IEnumerator WaitToLoad() {
         yield return new WaitForSeconds(1);
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
     }
 }

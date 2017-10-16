@@ -36,6 +36,7 @@ public class EnemyMovement : MonoBehaviour {
         startingPos = new Vector3(startingPosition.x, transform.position.y, startingPosition.y);
         endingPos = new Vector3(endingPosition.x, transform.position.y, endingPosition.y);
         transform.position = startingPos;
+        GetComponent<AudioSource>().Pause();
         StartCoroutine("Count");
     }
 

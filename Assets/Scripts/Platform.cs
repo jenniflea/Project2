@@ -15,6 +15,8 @@ public class Platform : MonoBehaviour {
         shadow = Instantiate(shadow, transform.position, Quaternion.LookRotation(Vector3.up));
         shadow.transform.localScale = new Vector3(transform.localScale.x, transform.localScale.z, 0);
 
+        GetComponent<AudioSource>().Pause();
+
         layerMask = (1 << LayerMask.NameToLayer("Platform")) + (1 << LayerMask.NameToLayer("Ignore Raycast"));
         layerMask = ~layerMask;
     }
