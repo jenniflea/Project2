@@ -46,12 +46,12 @@ public class Counter : MonoBehaviour {
     }
 
     public static void EnemyExposed(GameObject enemy, Color color) {
-        EnemyMovement enemyMovement = enemy.GetComponent<EnemyMovement>();
+        EnemyMovement enemyMovement = enemy.GetComponentInParent<EnemyMovement>();
         if (enemyMovement.isExposed) return;
 
         exposedEnemies++;
         enemyMovement.isExposed = true;
-        AddMaterialToObject(enemy, color);
+        AddMaterialToObject(enemy.transform.parent.gameObject, color);
         OpenDoorIfNeeded();
     }
 
@@ -61,6 +61,7 @@ public class Counter : MonoBehaviour {
 
         exposedPlatforms++;
         platform.isExposed = true;
+        platformObj.layer = LayerMask.NameToLayer("Default");
         AddMaterialToObject(platformObj, color);
         OpenDoorIfNeeded();
     }

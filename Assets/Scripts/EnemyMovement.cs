@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class EnemyMovement : MonoBehaviour {
 
     [Tooltip("x and z axes of the starting position of the enemy")]
@@ -13,11 +12,12 @@ public class EnemyMovement : MonoBehaviour {
     public float speed;
     public bool isExposed = false;
 
-    private Rigidbody rb;
     private Vector3 startingPos;
     private Vector3 endingPos;
     private bool isMovingToEndPos;
     private PaintTrail paintTrail;
+    private bool addBlob = false;
+    private Rigidbody rb;
 
     private Vector3 CurrentGoal {
         get {
@@ -27,25 +27,38 @@ public class EnemyMovement : MonoBehaviour {
     }
 
     private void Awake() {
-        rb = GetComponent<Rigidbody>();
         isMovingToEndPos = true;
-        paintTrail = GetComponentInChildren<PaintTrail>();
+        paintTrail = GetComponent<PaintTrail>();
+        rb = GetComponent<Rigidbody>();
     }
 
     private void Start() {
         startingPos = new Vector3(startingPosition.x, transform.position.y, startingPosition.y);
         endingPos = new Vector3(endingPosition.x, transform.position.y, endingPosition.y);
         transform.position = startingPos;
+        StartCoroutine("Count");
     }
 
     private void FixedUpdate() {
-        // If other side is reached
-        if (Vector3.Distance(transform.position, CurrentGoal) / 100 < 0.001) {
+        if (Vector3.Distance(transform.position, CurrentGoal) / 100 < 0.001)
+        {
             isMovingToEndPos = !isMovingToEndPos;
             paintTrail.ChangeColor();
-        
-        // Else move toward other side
-        } else
+        }
+        else
             rb.velocity = (CurrentGoal - transform.position).normalized * speed;
+
+        if (addBlob)
+            paintTrail.AddToTrail();
+    }
+
+    private IEnumerator Count() {
+        while(true) {
+            yield return new WaitForFixedUpdate();
+            yield return new WaitForFixedUpdate();
+            addBlob = true;
+            yield return new WaitForFixedUpdate();
+            addBlob = false;
+        }
     }
 }

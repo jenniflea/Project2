@@ -32,7 +32,7 @@ public class Health : MonoBehaviour {
 
     private void LowerHealth(Collision collision) {
         if (!collision.gameObject.CompareTag("Enemy")) return;
-        if (collision.gameObject.GetComponent<EnemyMovement>().isExposed) return;
+        if (collision.gameObject.GetComponentInParent<EnemyMovement>().isExposed) return;
         if (invincible) return;
 
         if (!TutorialMode) {

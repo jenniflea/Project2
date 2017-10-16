@@ -7,8 +7,11 @@ using UnityEngine.SceneManagement;
 public class Bullet : MonoBehaviour {
 
     public GameObject PaintBallSplatter;
+
     private Material material;
     private static int counter;
+    private Vector3 splatLocation;
+    private GameObject objectHit;
 
     // Use this for initialization
     private void Awake() {
@@ -23,44 +26,37 @@ public class Bullet : MonoBehaviour {
         material.SetColor(Shader.PropertyToID("_Color"), color);
 	}
 
-    private void OnCollisionEnter(Collision collision) {
-        var collidingGameObject = collision.gameObject;
-        if (collidingGameObject.CompareTag("Player")) return;
+    private void Update() {
+        transform.position = Vector3.MoveTowards(transform.position, splatLocation, 7);
+
+        if (Vector3.Distance(transform.position, splatLocation) / 100 < 0.01f)
+            SetSplat();
+    }
+
+    public void SetSplatLocation(RaycastHit raycastHit) {
+        splatLocation = raycastHit.point + raycastHit.normal * 0.001f;
+        objectHit = raycastHit.collider.gameObject;
+    }
+
+    private void SetSplat() {
+        if (objectHit.CompareTag("Player")) return; // Just to be safe
 
         // Color enemy
-        if (collidingGameObject.CompareTag("Enemy")) {
-            Counter.EnemyExposed(collidingGameObject, material.color);
-            Destroy(gameObject);
-            return;
+        if (objectHit.CompareTag("Enemy"))
+            Counter.EnemyExposed(objectHit, material.color);
 
         // Color platform
-        } else if (collidingGameObject.CompareTag("Platform")) {
-            Counter.PlatformExposed(collidingGameObject, material.color);
-            Destroy(gameObject);
-            return;
-        
-        // Don't splat on ceiling
-        } else if (collidingGameObject.CompareTag("Ceiling")) {
-            Destroy(gameObject);
-            return;
+        else if (objectHit.CompareTag("Platform"))
+            Counter.PlatformExposed(objectHit, material.color);
 
-        // Splat on floor
-        } else if (collidingGameObject.CompareTag("Floor"))
-            PaintBallSplatter.transform.localScale = new Vector3(0.1f, 0.1f, 0);
+        // Splat on wall or floor
+        else if (objectHit.CompareTag("Floor") || objectHit.CompareTag("Wall") || objectHit.CompareTag("Splat")) {
+            var splat = Instantiate(PaintBallSplatter, splatLocation, Quaternion.LookRotation(objectHit.transform.forward));
+            splat.GetComponent<MeshRenderer>().materials[0].SetColor(Shader.PropertyToID("_Color"), material.color);
+            splat.GetComponent<MeshRenderer>().sortingOrder = counter;
+            counter++;
+        }
 
-        // Splat on walls
-        else
-            PaintBallSplatter.transform.localScale = new Vector3(0.1f, 0.2f, 0);
-
-        Vector3 position = collision.collider.ClosestPointOnBounds(transform.position + transform.up * -0.5f);
-        ContactPoint c = collision.contacts[0];
-        Vector3 normal = c.normal;
-
-        var splat = Instantiate(PaintBallSplatter, position, Quaternion.LookRotation(normal), collision.gameObject.transform);
-        splat.transform.localPosition = new Vector3(splat.transform.localPosition.x, splat.transform.localPosition.y, 0.501f + 0.001f*counter);
-        splat.GetComponent<MeshRenderer>().materials[0].SetColor(Shader.PropertyToID("_Color"), material.color);
-        splat.GetComponent<MeshRenderer>().sortingOrder = counter;
-        counter++;
         Destroy(gameObject);
 
         if (!PaintGun.HasBulletsRemaining && !Counter.DoorIsOpen) {

@@ -4,18 +4,37 @@ using UnityEngine;
 
 public class PaintTrail : MonoBehaviour {
 
-    internal int CurrentColor;
-    internal int Counter;
+    public GameObject PaintPrefab;
+
+    private int Counter;
+    private int CurrentColor;
+    private int ObjectPoolIterator = 0;
+    private GameObject[] ObjectPool = new GameObject[100];
+
+    public Direction direction;
+    public enum Direction { Forward, Down, Right };
 
     private void Start() {
-        CurrentColor = 0;
         Counter = -32000;
+        CurrentColor = 0;
+        ObjectPoolIterator = 0;
+
+        for (int i = 0; i < ObjectPool.Length; i++) {
+            ObjectPool[i] = Instantiate(PaintPrefab, new Vector3(-1000, -1000, -1000), Quaternion.LookRotation(Vector3.up));
+        }
+	
     }
 
-    public int Layer() {
-        int layer = Counter;
+    private void Layer() {
+        ObjectPool[ObjectPoolIterator].GetComponent<MeshRenderer>().sortingOrder = Counter;
         Counter++;
-        return layer;
+    }
+
+    private void UpdateOPIterator() {
+        ObjectPoolIterator++;
+
+        if (ObjectPoolIterator >= ObjectPool.Length)
+            ObjectPoolIterator = 0;
     }
 
     public void ChangeColor() {
@@ -25,5 +44,22 @@ public class PaintTrail : MonoBehaviour {
             CurrentColor += 1;
     }
 
+    public void AddToTrail() {
+        Vector3 dir = Vector3.zero;
+        Paint paint = ObjectPool[ObjectPoolIterator].GetComponent<Paint>();
 
+        switch (direction) {
+            case Direction.Down: dir = transform.up * -1; break;
+            case Direction.Forward: dir = transform.forward; break;
+            case Direction.Right: dir = transform.right * -1; break;
+        }
+
+        Layer();
+        Vector3 position = gameObject.transform.position + dir * (gameObject.transform.localScale.y / 2 - 0.01f);
+        Quaternion rotation = Quaternion.LookRotation(transform.forward, dir);
+        paint.UpdateTransform(position, rotation);
+
+        paint.ChangeColor(CurrentColor);
+        UpdateOPIterator();
+    }
 }

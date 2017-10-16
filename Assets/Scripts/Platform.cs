@@ -4,25 +4,24 @@ using UnityEngine;
 
 public class Platform : MonoBehaviour {
     public bool isExposed;
-    public bool hasDynamicShadow = false;
-    public GameObject shadowPrefab;
+    public GameObject shadow;
 
-    private GameObject shadow;
+    private RaycastHit raycastHit;
+    private LayerMask layerMask;
 
     private void Start() {
         isExposed = false;
 
-        if (!hasDynamicShadow) return;
-        shadow = Instantiate(shadowPrefab, transform.position, transform.rotation);
-        shadow.transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, 0);
+        shadow = Instantiate(shadow, transform.position, Quaternion.LookRotation(Vector3.up));
+        shadow.transform.localScale = new Vector3(transform.localScale.x, transform.localScale.z, 0);
+
+        layerMask = (1 << LayerMask.NameToLayer("Platform")) + (1 << LayerMask.NameToLayer("Ignore Raycast"));
+        layerMask = ~layerMask;
     }
 
     private void FixedUpdate() {
-        if (!hasDynamicShadow) return;
-        RaycastHit raycastHit;
-        if (Physics.Raycast(transform.position, transform.right * -1, out raycastHit, 10.0f)) {
-            shadow.transform.position = raycastHit.point + raycastHit.normal * 0.05f;
-            shadow.transform.rotation = Quaternion.LookRotation(raycastHit.normal);
+        if (Physics.Raycast(transform.position, Vector3.up * -1, out raycastHit, 100.0f, layerMask)) {
+            shadow.transform.position = raycastHit.point + raycastHit.normal * 0.01f;
         }
 
     }

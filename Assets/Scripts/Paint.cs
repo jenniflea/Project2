@@ -4,26 +4,18 @@ using UnityEngine;
 
 public class Paint : MonoBehaviour {
 
-    public PaintTrail paintTrail;
-
     private Animator animator;
 
     private void Awake() {
         animator = GetComponent<Animator>();
     }
 
-    private void Start() {
-        if (paintTrail.CurrentColor == -1) {
-            paintTrail.CurrentColor = 0;
-        }
-
-        animator.SetInteger("CurrentIndex", paintTrail.CurrentColor);
-        StartCoroutine("WaitToDestroy");
+    public void ChangeColor(int Color) {
+        animator.SetInteger("CurrentIndex", Color);
     }
 
-    IEnumerator WaitToDestroy() {
-        yield return new WaitForSeconds(5);
-        Destroy(gameObject);
+    public void UpdateTransform(Vector3 position, Quaternion rotation) {
+        transform.position = position;
+        transform.rotation = rotation;
     }
-
 }

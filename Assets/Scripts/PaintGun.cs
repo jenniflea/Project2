@@ -60,10 +60,8 @@ public class PaintGun : MonoBehaviour {
         if (numBulletsUsed >= totalBullets) return;
         if (bulletShot) return;
 
-        var bullet = Instantiate(bulletPrefab, transform.position + 1.5f*transform.forward, transform.rotation*Quaternion.Euler(90, 0, 0));
+        var bullet = Instantiate(bulletPrefab, transform.position + 1.5f * transform.forward, transform.rotation * Quaternion.Euler(90, 0, 0));
         bullet.GetComponent<Bullet>().SetSplatLocation(raycastHit);
-        bulletRB = bullet.GetComponent<Rigidbody>();
-        bulletRB.AddForce(10000*transform.forward);
         UpdateNumBullets();
         StartCoroutine("BulletShot");
     }

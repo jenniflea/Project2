@@ -1,10 +1,12 @@
 fileFormatVersion: 2
 guid: 32c2ce746799c184ca9531503bc20eba
-timeCreated: 1508016382
+timeCreated: 1508139605
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - PaintPrefab: {fileID: 1280428468656616, guid: d48848eadfa38da4c93efb01470be9a5,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
