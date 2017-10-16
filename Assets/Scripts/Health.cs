@@ -49,7 +49,7 @@ public class Health : MonoBehaviour {
             if (currentHealth < 0)
                 currentHealth = 0;
 
-            healthText.text = "Health: " + currentHealth;
+            healthText.text = "Health: " + currentHealth.ToString() + "/" + totalHealth.ToString();
         }
 
         StartCoroutine("HurtByEnemy");
