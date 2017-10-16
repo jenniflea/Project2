@@ -13,9 +13,11 @@ public class PaintGun : MonoBehaviour {
     public static PaintGun instance;
     public bool TutorialMode = false;
 
+    private bool bulletShot = false;
     private Rigidbody bulletRB;
     private GameObject target;
     private static int numBulletsUsed;
+    RaycastHit raycastHit = new RaycastHit();
 
     public static bool HasBulletsRemaining {
         get {
@@ -42,20 +44,28 @@ public class PaintGun : MonoBehaviour {
 
     private void FixedUpdate() {
         // Show an estimate of where the bullet will go
-        RaycastHit raycastHit = new RaycastHit();
         if (Physics.Raycast(transform.position, transform.forward, out raycastHit, 150.0f)) {
             target.transform.position = raycastHit.point + raycastHit.normal*0.05f;
             target.transform.rotation = Quaternion.LookRotation(raycastHit.normal);
         }
     }
 
+    private IEnumerator BulletShot() {
+        bulletShot = true;
+        yield return new WaitForSeconds(0.5f);
+        bulletShot = false;
+    }
+
     public void ShootBullet() {
         if (numBulletsUsed >= totalBullets) return;
+        if (bulletShot) return;
 
         var bullet = Instantiate(bulletPrefab, transform.position + 1.5f*transform.forward, transform.rotation*Quaternion.Euler(90, 0, 0));
+        bullet.GetComponent<Bullet>().SetSplatLocation(raycastHit);
         bulletRB = bullet.GetComponent<Rigidbody>();
         bulletRB.AddForce(10000*transform.forward);
         UpdateNumBullets();
+        StartCoroutine("BulletShot");
     }
 
     public static void NoBulletsLeft() {
@@ -74,5 +84,4 @@ public class PaintGun : MonoBehaviour {
         yield return new WaitForSeconds(1);
         SceneManager.LoadScene("Main");
     }
-
 }

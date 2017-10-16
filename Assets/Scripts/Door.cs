@@ -9,15 +9,18 @@ public class Door : MonoBehaviour {
     public Text helpText;
     private Animator animator;
     private bool DoorIsOpen = false;
+    private MeshRenderer meshRenderer;
 
     private void Awake() {
         animator = GetComponent<Animator>();
+        meshRenderer = GetComponent<MeshRenderer>();
     }
 
     // Use this for initialization
     void Start () {
         animator.enabled = false;
         DoorIsOpen = false;
+        meshRenderer.enabled = false;
 	}
 
     private void OnTriggerEnter(Collider other) {
@@ -32,6 +35,7 @@ public class Door : MonoBehaviour {
         helpText.text = "Door opened!";
         animator.enabled = true;
         DoorIsOpen = true;
+        meshRenderer.enabled = true;
     }
 
     IEnumerator WaitToLoad() {

@@ -4,23 +4,19 @@ using UnityEngine.SceneManagement;
 
 public class InputManager : MonoBehaviour {
 
-    private void Start() {
-        StartCoroutine("WaitForInput");
-    }
+    private void Update() {
+        if (GamepadInput.GamePad.GetTrigger(GamepadInput.GamePad.Trigger.RightTrigger, false) == 1 ||
+            GamepadInput.GamePad.GetTrigger(GamepadInput.GamePad.Trigger.LeftTrigger, false) == 1)
+            PaintGun.instance.ShootBullet();
 
-    IEnumerator WaitForInput() {
-        while(true) {
-            if (GamepadInput.GamePad.GetTrigger(GamepadInput.GamePad.Trigger.RightTrigger, false) == 1 ||
-                GamepadInput.GamePad.GetTrigger(GamepadInput.GamePad.Trigger.LeftTrigger, false) == 1) {
-                PaintGun.instance.ShootBullet();
-                yield return new WaitForSeconds(0.5f);
-            }
+        if (GamepadInput.GamePad.GetButtonDown(GamepadInput.GamePad.Button.Start))
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
-            if (GamepadInput.GamePad.GetButtonDown(GamepadInput.GamePad.Button.Start))
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        var m_Rot = GamepadInput.GamePad.GetAxis(GamepadInput.GamePad.Axis.RightStick, false);
+        var m_Mov = GamepadInput.GamePad.GetAxis(GamepadInput.GamePad.Axis.LeftStick, false);
 
-            yield return null;
-        }
-
+        PlayerMovement.UpdateCamera(m_Rot);
+        PlayerMovement.UpdatePlayerLocation(m_Mov);
+        PlayerMovement.UpdatePlayerJump(GamepadInput.GamePad.GetButtonDown(GamepadInput.GamePad.Button.A));
     }
 }
